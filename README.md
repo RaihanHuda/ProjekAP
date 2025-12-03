@@ -4,7 +4,7 @@
 #include <cmath>
 using namespace std;
 
-int binerKeDesimal(string biner) {
+int binerkedesimal(string biner) {
     int des = 0;
     int panjang = biner.length();
     for (int i = 0; i < panjang; i++) {
@@ -15,7 +15,7 @@ int binerKeDesimal(string biner) {
     return des;
 }
 
-int oktalKeDesimal(string oktal) {
+int oktalkedesimal(string oktal) {
     int des = 0;
     int panjang = oktal.length();
     for (int i = 0; i < panjang; i++) {
@@ -24,7 +24,7 @@ int oktalKeDesimal(string oktal) {
     return des;
 }
 
-int heksaKeDesimal(string heksa) {
+int heksakedesimal(string heksa) {
     int des = 0;
     int panjang = heksa.length();
     for (int i = 0; i < panjang; i++) {
@@ -39,7 +39,7 @@ int heksaKeDesimal(string heksa) {
     return des;
 }
 
-string desimalKe(int des, int basis) {
+string desimalke(int des, int basis) {
     string simbol = "0123456789ABCDEF";
     string hasil = "";
     if (des == 0) return "0";
@@ -63,9 +63,9 @@ int main() {
     int desimal = 0;
 
     if (dari == "desimal") desimal = stoi(angka);
-    else if (dari == "biner") desimal = binerKeDesimal(angka);
-    else if (dari == "oktal") desimal = oktalKeDesimal(angka);
-    else if (dari == "heksa") desimal = heksaKeDesimal(angka);
+    else if (dari == "biner") desimal = binerkedesimal(angka);
+    else if (dari == "oktal") desimal = oktalkedesimal(angka);
+    else if (dari == "heksa") desimal = heksakedesimal(angka);
     else {
         cout << "Jenis bilangan asal tidak dikenali!\n";
         return 0;
@@ -74,12 +74,13 @@ int main() {
     if (ke == "desimal")
         cout << "Hasil: " << desimal << endl;
     else if (ke == "biner")
-        cout << "Hasil: " << desimalKe(desimal, 2) << endl;
+        cout << "Hasil: " << desimalke(desimal, 2) << endl;
     else if (ke == "oktal")
-        cout << "Hasil: " << desimalKe(desimal, 8) << endl;
+        cout << "Hasil: " << desimalke(desimal, 8) << endl;
     else if (ke == "heksa")
-        cout << "Hasil: " << desimalKe(desimal, 16) << endl;
+        cout << "Hasil: " << desimalke(desimal, 16) << endl;
     else
         cout << "Jenis bilangan tujuan tidak dikenali!\n";
 }
+
 ```
