@@ -1,3 +1,7 @@
+<<<<<<< HEAD:AP1.cpp
+=======
+```
+>>>>>>> parent of e8c3621 (Tambah file do-While dan fungsi clearscreen):AP1
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -81,4 +85,8 @@ int main() {
     else
         cout << "Jenis bilangan tujuan tidak dikenali!\n";
 }
+<<<<<<< HEAD:AP1.cpp
 
+=======
+```
+>>>>>>> parent of e8c3621 (Tambah file do-While dan fungsi clearscreen):AP1
