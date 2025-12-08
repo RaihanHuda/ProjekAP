@@ -1,4 +1,3 @@
-```
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -82,4 +81,3 @@ int main() {
     else
         cout << "Jenis bilangan tujuan tidak dikenali!\n";
 }
-```
