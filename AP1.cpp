@@ -2,7 +2,28 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <vector>
 using namespace std;
+
+void tambahHistori(vector<string>& hist, const string& entry) {
+    hist.push_back(entry);
+}
+
+void tanpilanHistori(const vector<string>& hist) {
+    if (hist.empty()) {
+        cout << "Anda belum melakukan konversi." << endl;
+        return;
+    }
+    cout << "=== History Konversi ===" << endl;
+    for (size_t i = 0; i < hist.size(); i++) {
+        cout << i + 1 << ". " << hist[i] << endl;
+    }
+}
+
+void hapusHistori(vector<string>& hist) {
+    hist.clear();
+    cout << "History konversi telah dihapus." << endl;
+}
 
 void clearScreen() {
     #ifdef _WIN32
@@ -60,6 +81,7 @@ string desimalKe(int des, int basis) {
 
 int main() {
     
+    vector<string> histori;
     char check;
     //Kutambahin do While biar bisa ulang lagi sesuai keinginan usr
     do {
