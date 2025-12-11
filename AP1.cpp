@@ -14,7 +14,7 @@ void tanpilanHistori(const vector<string>& hist) {
         cout << "Anda belum melakukan konversi." << endl;
         return;
     }
-    cout << "=== History Konversi ===" << endl;
+    cout << "\n=== History Konversi ===" << endl;
     for (size_t i = 0; i < hist.size(); i++) {
         cout << i + 1 << ". " << hist[i] << endl;
     }
@@ -88,7 +88,33 @@ int main() {
         
         clearScreen(); // biar di console/terminal bersih pas mulai program
         string dari, ke, angka;
+        int pilihan;
         cout << "=== Program Konversi Bilangan ===\n";
+        cout << "Pilihan Menu:\n";
+        cout << "1. Konversi Bilangan\n";
+        cout << "2. Lihat History Konversi\n";
+        cout << "Masukkan pilihan (1/2): ";
+        cin >> pilihan;
+        if (pilihan == 1) {
+            // Lanjut ke proses konversi
+        } else if (pilihan == 2) {
+            tanpilanHistori(histori);
+            cout << "\nApakah Anda ingin menghapus history? (y/n): ";
+            char hapus;
+            cin >> hapus;
+            if (hapus == 'y' || hapus == 'Y') {
+                hapusHistori(histori);
+            }
+            cout << "\nApakah Anda ingin kembali ke menu utama? (y/n): ";
+            cin >> check;
+            continue; // Kembali ke awal loop do-while
+        } else {
+            cout << "Pilihan tidak valid!\n";
+            cout << "\nApakah Anda ingin kembali ke menu utama? (y/n): ";
+            cin >> check;
+            continue; // Kembali ke awal loop do-while1
+        }
+
         cout << "Masukkan asal bilangan (desimal/biner/oktal/heksa): ";
         cin >> dari;
         cout << "Masukkan tujuan bilangan (desimal/biner/oktal/heksa): ";
@@ -118,7 +144,10 @@ int main() {
         else
         cout << "Jenis bilangan tujuan tidak dikenali!\n";
 
-        cout << "\nApakah Anda ingin melakukan konversi lagi? (y/n): ";
+    string historiEntry = angka + " dari " + dari + " ke " + ke + " = " + (ke == "desimal" ? to_string(desimal) : desimalKe(desimal, (ke == "biner" ? 2 : (ke == "oktal" ? 8 : 16))));
+    tambahHistori(histori, historiEntry);
+
+        cout << "\nApakah anda ingin kembali ke menu utama? (y/n): ";
         cin >> check;
     } while (check == 'y' || check == 'Y');
 }
