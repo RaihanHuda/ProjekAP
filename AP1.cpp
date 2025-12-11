@@ -5,6 +5,19 @@
 #include <vector>
 using namespace std;
 
+int menuKonversi(int dari, int ke, int angka) {
+
+        cout << "=====KONVERSI BILANGAN=====" << endl;
+        cout << "1. Desimal\n2. Biner\n3. Oktal\n4. Heksa\n";
+        cout << "Masukkan asal bilangan sesuai nomor (1/2/3/4): ";
+        cin >> dari;
+        cout << "Masukkan tujuan bilangan sesuai nomor (1/2/3/4): ";
+        cin >> ke;
+        cout << "Masukkan angkanya: ";
+        cin >> angka;
+        
+}
+
 void tambahHistori(vector<string>& hist, const string& entry) {
     hist.push_back(entry);
 }
