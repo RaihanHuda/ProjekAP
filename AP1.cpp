@@ -5,17 +5,17 @@
 #include <vector>
 using namespace std;
 
-int menuKonversi(int dari, int ke, int angka) {
+int menuKonversi(int from, int to, string value) {
 
         cout << "=====KONVERSI BILANGAN=====" << endl;
         cout << "1. Desimal\n2. Biner\n3. Oktal\n4. Heksa\n";
         cout << "Masukkan asal bilangan sesuai nomor (1/2/3/4): ";
-        cin >> dari;
+        cin >> from;
         cout << "Masukkan tujuan bilangan sesuai nomor (1/2/3/4): ";
-        cin >> ke;
+        cin >> to;
         cout << "Masukkan angkanya: ";
-        cin >> angka;
-        
+        cin >> value;
+        return from, to, value;
 }
 
 void tambahHistori(vector<string>& hist, const string& entry) {
@@ -100,19 +100,11 @@ int main() {
     do {
         
         clearScreen(); // biar di console/terminal bersih pas mulai program
-        string dari, ke, angka;
-        cout << "=== Program Konversi Bilangan ===\n";
-        cout << "Pilihan menu:\n";
-        cout << "1. Konversi Bilangan\n";
-        cout << "2. Lihat History Konversi\n";
-        cout << "3. Hapus History Konversi\n";
-        cout << "4. Keluar\n";
-        cout << "Masukkan asal bilangan (desimal/biner/oktal/heksa): ";
-        cin >> dari;
-        cout << "Masukkan tujuan bilangan (desimal/biner/oktal/heksa): ";
-        cin >> ke;
-        cout << "Masukkan angkanya: ";
-        cin >> angka;
+        string angka;
+        int dari, ke;
+        cout << "=====KONVERSI BILANGAN=====" << endl;
+        
+  
         
         int desimal = 0;
         
