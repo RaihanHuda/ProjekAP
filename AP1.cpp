@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -85,7 +84,7 @@ int main() {
     char check;
     //Kutambahin do While biar bisa ulang lagi sesuai keinginan usr
     do {
-        
+        check = 'y'; // inisialisasi ulang check setiap awal loop
         clearScreen(); // biar di console/terminal bersih pas mulai program
         string dari, ke, angka;
         int pilihan;
@@ -110,8 +109,8 @@ int main() {
             continue; // Kembali ke awal loop do-while
         } else {
             cout << "Pilihan tidak valid!\n";
-            cout << "\nApakah Anda ingin kembali ke menu utama? (y/n): ";
-            cin >> check;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             continue; // Kembali ke awal loop do-while1
         }
 
