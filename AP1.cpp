@@ -4,16 +4,25 @@
 #include <vector>
 using namespace std;
 
+void clearScreen() {
+    #ifdef _WIN32
+        system("cls"); // windows
+    #else
+        system("clear"); // linux/macOS
+    #endif
+};
+
 void tambahHistori(vector<string>& hist, const string& entry) {
     hist.push_back(entry);
 }
 
-void tanpilanHistori(const vector<string>& hist) {
+void tampilanHistori(const vector<string>& hist) {
     if (hist.empty()) {
+        cout << "\n=== History Konversi ===" << endl;
         cout << "Anda belum melakukan konversi." << endl;
         return;
     }
-    cout << "\n=== History Konversi ===" << endl;
+    cout << "=== History Konversi ===" << endl;
     for (size_t i = 0; i < hist.size(); i++) {
         cout << i + 1 << ". " << hist[i] << endl;
     }
@@ -24,13 +33,95 @@ void hapusHistori(vector<string>& hist) {
     cout << "History konversi telah dihapus." << endl;
 }
 
-void clearScreen() {
-    #ifdef _WIN32
-        system("cls"); // windows
-    #else
-        system("clear"); // linux/macOS
-    #endif
-};
+bool parseInput(const string& input, string& angka, int& basis) {
+    size_t buka = input.find('(');
+    size_t tutup = input.find(')');
+
+    if (buka == string::npos || tutup == string::npos || tutup <= buka)
+        return false;
+
+    angka = input.substr(0, buka);
+    string basisStr = input.substr(buka + 1, tutup - buka - 1);
+
+    try {
+        basis = stoi(basisStr);
+    } catch (...) {
+        return false;
+    }
+
+    if (!(basis == 2 || basis == 8 || basis == 10 || basis == 16))
+        return false;
+
+    if (angka.empty())
+        return false;
+
+    return true;
+}
+
+bool validasi(const string& angka, int basis) {
+    for (char c : angka) {
+        int nilai;
+
+        if (c >= '0' && c <= '9')
+            nilai = c - '0';
+        else if (c >= 'A' && c <= 'F')
+            nilai = 10 + (c - 'A');
+        else if (c >= 'a' && c <= 'f')
+            nilai = 10 + (c - 'a');
+        else
+            return false;
+
+        if (nilai >= basis)
+            return false;
+    }
+    return true;
+}
+
+void inputNilai(string& angka, int& basis) {
+    string input;
+
+    while (true) {
+        cout << "Masukkan nilai beserta basisnya: ";
+        cin >> input;
+
+        if (!parseInput(input, angka, basis)) {
+            cout << "Format input salah!\n\n";
+            continue;
+        }
+
+        if (!validasi(angka, basis)) {
+            cout << "Digit tidak sesuai dengan basis!\n\n";
+            continue;
+        }
+
+        return; // input valid
+    }
+}
+
+int getTujuan(){
+    string input;
+    
+    while(true) {
+        cout << "Masukkan basis tujuan: ";
+        cin >> input;
+
+        for (char & c : input) {
+            c = tolower(c); // biar input ga case sensitive
+        }
+        //validasi input
+        if (input == "2" || input == "biner" || input == "bin") {
+            return 2;
+        } else if (input == "8" || input == "oktal" || input == "oct") {
+            return 8;
+        } else if (input == "10" || input == "desimal" || input == "dec") {
+            return 10;
+        } else if (input == "16" || input == "heksadesimal" || input == "hex") {
+            return 16;
+        } else {
+            cout << "Basis tujuan tidak valid!\n\n";
+        }
+    }
+}
 
 int binerKeDesimal(string biner) {
     int des = 0;
@@ -81,72 +172,113 @@ string desimalKe(int des, int basis) {
 int main() {
     
     vector<string> histori;
-    char check;
+    string check;
     //Kutambahin do While biar bisa ulang lagi sesuai keinginan usr
+    clearScreen(); // biar di console/terminal bersih pas mulai program
     do {
-        check = 'y'; // inisialisasi ulang check setiap awal loop
-        clearScreen(); // biar di console/terminal bersih pas mulai program
-        string dari, ke, angka;
-        int pilihan;
+        string angka;
+        int pilihan, basis;
         cout << "=== Program Konversi Bilangan ===\n";
         cout << "Pilihan Menu:\n";
-        cout << "1. Konversi Bilangan\n";
-        cout << "2. Lihat History Konversi\n";
-        cout << "Masukkan pilihan (1/2): ";
-        cin >> pilihan;
-        if (pilihan == 1) {
-            // Lanjut ke proses konversi
-        } else if (pilihan == 2) {
-            tanpilanHistori(histori);
-            cout << "\nApakah Anda ingin menghapus history? (y/n): ";
-            char hapus;
-            cin >> hapus;
-            if (hapus == 'y' || hapus == 'Y') {
-                hapusHistori(histori);
+        cout << "[1] Konversi Bilangan\n";
+        cout << "[2] Lihat History Konversi\n";
+        
+        while(true) {
+            cout << "Masukkan pilihan (1/2): ";
+            cin >> pilihan;
+            if(pilihan == 1 || pilihan == 2) {
+                break;
+            } else {
+                cout << "Pilihan tidak valid. Silakan coba lagi.\n\n";
+                cin.clear(); // untuk membersihkan flag error pada cin
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // untuk mengabaikan input yang salah
             }
-            cout << "\nApakah Anda ingin kembali ke menu utama? (y/n): ";
-            cin >> check;
-            continue; // Kembali ke awal loop do-while
-        } else {
-            cout << "Pilihan tidak valid!\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            continue; // Kembali ke awal loop do-while1
         }
 
-        cout << "Masukkan asal bilangan (desimal/biner/oktal/heksa): ";
-        cin >> dari;
-        cout << "Masukkan tujuan bilangan (desimal/biner/oktal/heksa): ";
-        cin >> ke;
-        cout << "Masukkan angkanya: ";
-        cin >> angka;
-        
+        if(pilihan == 1) {
+            clearScreen();
+        } else if(pilihan == 2) {
+            clearScreen();
+            tampilanHistori(histori);
+            cout << "\nApakah anda ingin kembali ke menu utama?\n";
+            cout << "[y] ya\n";
+            cout << "[e] hapus history\n";
+            cout << "[1] Konversi Bilangan\n";
+            cout << "[n] tidak (program berakhir)\n";
+            cout << "Pilihan Anda: ";
+            cin >> check;
+            if (check == "y" || check == "Y") {
+                clearScreen();
+                continue;
+            } else if (check == "e" || check == "E") {
+                clearScreen();
+                hapusHistori(histori);
+                cout << "Apakah anda ingin kembali ke menu utama?\n";
+                cout << "[y] ya\n";
+                cout << "[1] Konversi Bilangan\n";
+                cout << "[n] tidak (program berakhir)\n";
+                cout << "Pilihan Anda: ";
+                cin >> check;
+                if (check == "y" || check == "Y") {
+                    clearScreen();
+                    continue;
+                }
+                else if (check == "1") {
+                    clearScreen();
+                } else {
+                    cout << "Program berakhir. Terima kasih!\n";
+                    break;
+                }
+            } else if (check == "1") {
+                clearScreen();
+            } else {
+                cout << "Program berakhir. Terima kasih!\n";
+                break;
+            }
+        }
+
+        cout << "=== Konversi Bilangan ===\n";
+        cout << "Format input nilai (abaikan kurung siku): \n";
+        cout << "Desimal\t\t[...(10)]\n";
+        cout << "Biner\t\t[...(2)]\n";
+        cout << "Oktal\t\t[...(8)]\n";
+        cout << "Heksadesimal\t[...(16)]\n";
+        inputNilai(angka, basis);
+
+        cout << "\nFormat Basis Tujuan: \n";
+        cout << "Biner\t\t[2/biner/bin]\n";
+        cout << "Oktal\t\t[8/oktal/oct]\n";
+        cout << "Desimal\t\t[10/desimal/dec]\n";
+        cout << "Heksadesimal\t[16/heksadesimal/hex]\n";
+        int tujuan = getTujuan();
+
         int desimal = 0;
         
-    if (dari == "desimal") desimal = stoi(angka);
-    else if (dari == "biner") desimal = binerKeDesimal(angka);
-    else if (dari == "oktal") desimal = oktalKeDesimal(angka);
-    else if (dari == "heksa") desimal = heksaKeDesimal(angka);
-    else {
-        cout << "Jenis bilangan asal tidak dikenali!\n";
-        return 0;
-    }
+        if (basis == 10) desimal = stoi(angka);
+        else if (basis == 2) desimal = binerKeDesimal(angka);
+        else if (basis == 8) desimal = oktalKeDesimal(angka);
+        else if (basis == 16) desimal = heksaKeDesimal(angka);
+        else {
+            cout << "Jenis bilangan asal tidak dikenali!\n";
+            return 0;
+        }
 
-    if (ke == "desimal")
-        cout << "\nHasil: " << desimal << endl;
-    else if (ke == "biner")
-        cout << "\nHasil: " << desimalKe(desimal, 2) << endl;
-    else if (ke == "oktal")
-        cout << "\nHasil: " << desimalKe(desimal, 8) << endl;
-        else if (ke == "heksa")
-        cout << "\nHasil: " << desimalKe(desimal, 16) << endl;
-        else
-        cout << "Jenis bilangan tujuan tidak dikenali!\n";
+        if (tujuan == 10)
+            cout << "\nHasil: " << desimal << endl;
+        else if (tujuan == 2)
+            cout << "\nHasil: " << desimalKe(desimal, 2) << endl;
+        else if (tujuan == 8)
+            cout << "\nHasil: " << desimalKe(desimal, 8) << endl;
+            else if (tujuan == 16)
+            cout << "\nHasil: " << desimalKe(desimal, 16) << endl;
+            else
+            cout << "Jenis bilangan tujuan tidak dikenali!\n";
 
-    string historiEntry = angka + " dari " + dari + " ke " + ke + " = " + (ke == "desimal" ? to_string(desimal) : desimalKe(desimal, (ke == "biner" ? 2 : (ke == "oktal" ? 8 : 16))));
+    string historiEntry = angka + " dari " + (basis == 10 ? "desimal" : (basis == 2 ? "biner" : (basis == 8 ? "oktal" : "heksadesimal"))) + " ke " + (tujuan == 10 ? "desimal" : (tujuan == 2 ? "biner" : (tujuan == 8 ? "oktal" : "heksadesimal"))) + " = " + (tujuan == 10 ? to_string(desimal) : desimalKe(desimal, tujuan));
     tambahHistori(histori, historiEntry);
 
         cout << "\nApakah anda ingin kembali ke menu utama? (y/n): ";
         cin >> check;
-    } while (check == 'y' || check == 'Y');
+        clearScreen();
+    } while (check == "y" || check == "Y");
 }
