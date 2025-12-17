@@ -170,14 +170,13 @@ string desimalKe(int des, int basis) {
 }
 
 int main() {
-    
     vector<string> histori;
     string check;
-    //Kutambahin do While biar bisa ulang lagi sesuai keinginan usr
+    string angka;
+    int pilihan, basis;
+    //KELOMPOK 1 - PROGRAM KONVERSI BILANGAN
     do {
         clearScreen(); // biar di console/terminal bersih pas mulai program
-        string angka;
-        int pilihan, basis;
         cout << "=== Program Konversi Bilangan ===\n";
         cout << "Pilihan Menu:\n";
         cout << "[1] Konversi Bilangan\n";
@@ -230,12 +229,21 @@ int main() {
             else if (tujuan == 16)
                 cout << "\nHasil: " << desimalKe(desimal, 16) << endl;
 
-            string historiEntry = angka + " dari " + (basis == 10 ? "desimal" : (basis == 2 ? "biner" : (basis == 8 ? "oktal" : "heksadesimal"))) + " ke " + (tujuan == 10 ? "desimal" : (tujuan == 2 ? "biner" : (tujuan == 8 ? "oktal" : "heksadesimal"))) + " = " + (tujuan == 10 ? to_string(desimal) : desimalKe(desimal, tujuan));
+            string historiEntry = angka + " dari " + 
+            (basis == 10 ? "desimal" : (basis == 2 ? "biner" : (basis == 8 ? "oktal" : "heksadesimal"))) + 
+            " ke " + (tujuan == 10 ? "desimal" : (tujuan == 2 ? "biner" : (tujuan == 8 ? "oktal" : "heksadesimal"))) + 
+            " = " + (tujuan == 10 ? to_string(desimal) : desimalKe(desimal, tujuan));
             tambahHistori(histori, historiEntry);
 
         } else if(pilihan == 2) {
             clearScreen();
             tampilanHistori(histori);
+            cout << "\nApakah anda ingin menghapus history konversi? (y/n): ";
+            char hapus;
+            cin >> hapus;
+            if (hapus == 'y' || hapus == 'Y') {
+                hapusHistori(histori);
+            }
         }
         else if(pilihan == 3) {
             break;
