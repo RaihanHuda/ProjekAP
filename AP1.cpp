@@ -85,12 +85,12 @@ void inputNilai(string& angka, int& basis) {
         cin >> input;
 
         if (!parseInput(input, angka, basis)) {
-            cout << "Format input salah!\n\n";
+            cout << "\nFormat input salah!\n";
             continue;
         }
 
         if (!validasi(angka, basis)) {
-            cout << "Digit tidak sesuai dengan basis!\n\n";
+            cout << "\nDigit tidak sesuai dengan basis!\n";
             continue;
         }
 
@@ -174,22 +174,23 @@ int main() {
     vector<string> histori;
     string check;
     //Kutambahin do While biar bisa ulang lagi sesuai keinginan usr
-    clearScreen(); // biar di console/terminal bersih pas mulai program
     do {
+        clearScreen(); // biar di console/terminal bersih pas mulai program
         string angka;
         int pilihan, basis;
         cout << "=== Program Konversi Bilangan ===\n";
         cout << "Pilihan Menu:\n";
         cout << "[1] Konversi Bilangan\n";
         cout << "[2] Lihat History Konversi\n";
+        cout << "[3] Keluar Program\n";
         
         while(true) {
-            cout << "Masukkan pilihan (1/2): ";
+            cout << "Masukkan pilihan (1/2/3): ";
             cin >> pilihan;
-            if(pilihan == 1 || pilihan == 2) {
+            if(pilihan == 1 || pilihan == 2 || pilihan == 3) {
                 break;
             } else {
-                cout << "Pilihan tidak valid. Silakan coba lagi.\n\n";
+                cout << "\nPilihan tidak valid. Silakan coba lagi.\n";
                 cin.clear(); // untuk membersihkan flag error pada cin
                 cin.ignore(numeric_limits<streamsize>::max(), '\n'); // untuk mengabaikan input yang salah
             }
@@ -197,88 +198,56 @@ int main() {
 
         if(pilihan == 1) {
             clearScreen();
+            cout << "=== Konversi Bilangan ===\n";
+            cout << "Format input nilai (abaikan kurung siku): \n";
+            cout << "Desimal\t\t[...(10)]\n";
+            cout << "Biner\t\t[...(2)]\n";
+            cout << "Oktal\t\t[...(8)]\n";
+            cout << "Heksadesimal\t[...(16)]\n";
+            inputNilai(angka, basis);
+
+            cout << "\nFormat Basis Tujuan: \n";
+            cout << "Biner\t\t[2/biner/bin]\n";
+            cout << "Oktal\t\t[8/oktal/oct]\n";
+            cout << "Desimal\t\t[10/desimal/dec]\n";
+            cout << "Heksadesimal\t[16/heksadesimal/hex]\n";
+            int tujuan = getTujuan();
+
+            int desimal = 0;
+            
+            if (basis == 10) desimal = stoi(angka);
+            else if (basis == 2) desimal = binerKeDesimal(angka);
+            else if (basis == 8) desimal = oktalKeDesimal(angka);
+            else if (basis == 16) desimal = heksaKeDesimal(angka);
+
+
+            if (tujuan == 10)
+                cout << "\nHasil: " << desimal << endl;
+            else if (tujuan == 2)
+                cout << "\nHasil: " << desimalKe(desimal, 2) << endl;
+            else if (tujuan == 8)
+                cout << "\nHasil: " << desimalKe(desimal, 8) << endl;
+            else if (tujuan == 16)
+                cout << "\nHasil: " << desimalKe(desimal, 16) << endl;
+
+            string historiEntry = angka + " dari " + (basis == 10 ? "desimal" : (basis == 2 ? "biner" : (basis == 8 ? "oktal" : "heksadesimal"))) + " ke " + (tujuan == 10 ? "desimal" : (tujuan == 2 ? "biner" : (tujuan == 8 ? "oktal" : "heksadesimal"))) + " = " + (tujuan == 10 ? to_string(desimal) : desimalKe(desimal, tujuan));
+            tambahHistori(histori, historiEntry);
+
         } else if(pilihan == 2) {
             clearScreen();
             tampilanHistori(histori);
-            cout << "\nApakah anda ingin kembali ke menu utama?\n";
-            cout << "[y] ya\n";
-            cout << "[e] hapus history\n";
-            cout << "[1] Konversi Bilangan\n";
-            cout << "[n] tidak (program berakhir)\n";
-            cout << "Pilihan Anda: ";
-            cin >> check;
-            if (check == "y" || check == "Y") {
-                clearScreen();
-                continue;
-            } else if (check == "e" || check == "E") {
-                clearScreen();
-                hapusHistori(histori);
-                cout << "Apakah anda ingin kembali ke menu utama?\n";
-                cout << "[y] ya\n";
-                cout << "[1] Konversi Bilangan\n";
-                cout << "[n] tidak (program berakhir)\n";
-                cout << "Pilihan Anda: ";
-                cin >> check;
-                if (check == "y" || check == "Y") {
-                    clearScreen();
-                    continue;
-                }
-                else if (check == "1") {
-                    clearScreen();
-                } else {
-                    cout << "Program berakhir. Terima kasih!\n";
-                    break;
-                }
-            } else if (check == "1") {
-                clearScreen();
-            } else {
-                cout << "Program berakhir. Terima kasih!\n";
-                break;
-            }
+        }
+        else if(pilihan == 3) {
+            break;
         }
 
-        cout << "=== Konversi Bilangan ===\n";
-        cout << "Format input nilai (abaikan kurung siku): \n";
-        cout << "Desimal\t\t[...(10)]\n";
-        cout << "Biner\t\t[...(2)]\n";
-        cout << "Oktal\t\t[...(8)]\n";
-        cout << "Heksadesimal\t[...(16)]\n";
-        inputNilai(angka, basis);
-
-        cout << "\nFormat Basis Tujuan: \n";
-        cout << "Biner\t\t[2/biner/bin]\n";
-        cout << "Oktal\t\t[8/oktal/oct]\n";
-        cout << "Desimal\t\t[10/desimal/dec]\n";
-        cout << "Heksadesimal\t[16/heksadesimal/hex]\n";
-        int tujuan = getTujuan();
-
-        int desimal = 0;
-        
-        if (basis == 10) desimal = stoi(angka);
-        else if (basis == 2) desimal = binerKeDesimal(angka);
-        else if (basis == 8) desimal = oktalKeDesimal(angka);
-        else if (basis == 16) desimal = heksaKeDesimal(angka);
-        else {
-            cout << "Jenis bilangan asal tidak dikenali!\n";
-            return 0;
-        }
-
-        if (tujuan == 10)
-            cout << "\nHasil: " << desimal << endl;
-        else if (tujuan == 2)
-            cout << "\nHasil: " << desimalKe(desimal, 2) << endl;
-        else if (tujuan == 8)
-            cout << "\nHasil: " << desimalKe(desimal, 8) << endl;
-            else if (tujuan == 16)
-            cout << "\nHasil: " << desimalKe(desimal, 16) << endl;
-            else
-            cout << "Jenis bilangan tujuan tidak dikenali!\n";
-
-    string historiEntry = angka + " dari " + (basis == 10 ? "desimal" : (basis == 2 ? "biner" : (basis == 8 ? "oktal" : "heksadesimal"))) + " ke " + (tujuan == 10 ? "desimal" : (tujuan == 2 ? "biner" : (tujuan == 8 ? "oktal" : "heksadesimal"))) + " = " + (tujuan == 10 ? to_string(desimal) : desimalKe(desimal, tujuan));
-    tambahHistori(histori, historiEntry);
-
-        cout << "\nApakah anda ingin kembali ke menu utama? (y/n): ";
+        cout << "\nApakah anda ingin kembali ke menu utama?:\n";
+        cout << "[y] Kembali ke menu utama\n";
+        cout << "[masukkan apa saja] Keluar dari program\n";
+        cout << "Pilihan: ";
         cin >> check;
-        clearScreen();
     } while (check == "y" || check == "Y");
+    if (check != "y" && check != "Y") {
+        cout << "Terima kasih telah menggunakan program ini!" << endl;
+    }
 }
